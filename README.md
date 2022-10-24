@@ -56,7 +56,7 @@ These are all the tasks of this project, the ones that are completed link to the
 Files | Description
 ----- | -----------
 
-[0. Restart from scratch!](AirBnB_clone_v3) | Clone codebase
+[0. Restart from scratch!] | Clone codebase
 
 [](./) | 
 
