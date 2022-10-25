@@ -1,30 +1,40 @@
 #!/usr/bin/python3
-"""
-    Sript that starts a Flask web application
-"""
-from flask import Flask, render_template
+""" Starts a Flash Web Application """
 from models import storage
-import os
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from os import environ
+from flask import Flask, render_template
 app = Flask(__name__)
+# app.jinja_env.trim_blocks = True
+# app.jinja_env.lstrip_blocks = True
 
 
-def handle_teardown(self):
-    """
-        method to handle teardown
-    """
+@app.teardown_appcontext
+def close_db(error):
+    """ Remove the current SQLAlchemy Session """
     storage.close()
 
 
 @app.route('/hbnb_filters', strict_slashes=False)
-def filters_list():
-    """
-        method to display html page 6-index.html
-    """
-    states = storage.all('State').values()
-    amenities = storage.all('Amenity').values()
-    return render_template(
-        "10-hbnb_filters.html",
-        states=states, amenities=amenities)
+def hbnb_filter():
+    """ HBNB filters """
+    states = storage.all(State).values()
+    states = sorted(states, key=lambda k: k.name)
+    st_ct = []
 
-if __name__ == '__main__':
+    for state in states:
+        st_ct.append([state, sorted(state.cities, key=lambda k: k.name)])
+
+    amenities = storage.all(Amenity).values()
+    amenities = sorted(amenities, key=lambda k: k.name)
+
+    return render_template('10-hbnb_filters.html',
+                           states=st_ct,
+                           amenities=amenities)
+
+
+if __name__ == "__main__":
+    """ Main Function """
     app.run(host='0.0.0.0', port=5000)
