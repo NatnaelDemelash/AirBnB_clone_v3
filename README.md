@@ -1,1 +1,1 @@
-#  AirBnB clone - RESTful API
+#  AirBnB clone - Web dynamic
